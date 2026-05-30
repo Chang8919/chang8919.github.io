@@ -1,178 +1,187 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-<meta charset="UTF-8">
-<title>美化版在线计算器</title>
-<style>
-  body {
-    font-family: "Segoe UI", Arial, sans-serif;
-    text-align: center;
-    background: #2f3640;
-    color: #f5f6fa;
-    margin: 0;
-    padding: 20px;
-    transition: background 0.3s, color 0.3s;
-  }
-  body.dark {
-    background: #121212;
-    color: #f0f0f0;
-  }
+  <meta charset="UTF-8" />
+  <title>美化版在线计算器</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      text-align: center;
+      background: #2f3640;
+      color: #f5f6fa;
+      margin: 0;
+      padding: 20px;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark {
+      background: #121212;
+      color: #f0f0f0;
+    }
 
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 30px;
-    flex-wrap: wrap;
-  }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
 
-  .calculator {
-    position: relative;
-    background: #f5f6fa;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    transition: background 0.3s;
-  }
-  body.dark .calculator {
-    background: #1e1e1e;
-  }
+    .calculator {
+      position: relative;
+      background: #f5f6fa;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      transition: background 0.3s;
+    }
+    body.dark .calculator {
+      background: #1e1e1e;
+    }
 
-  #display {
-    width: 100%;
-    max-width: 320px;
-    height: 55px;
-    font-size: 26px;
-    text-align: right;
-    margin-bottom: 15px;
-    padding: 8px;
-    border: 2px solid #ccc;
-    border-radius: 12px;
-    background: #f0f0f0;
-    color: #2f3640;
-  }
-  body.dark #display {
-    background: #2a2a2a;
-    color: #fff;
-    border-color: #555;
-  }
+    #display {
+      width: 100%;
+      max-width: 320px;
+      height: 55px;
+      font-size: 26px;
+      text-align: right;
+      margin-bottom: 15px;
+      padding: 8px;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      background: #f0f0f0;
+      color: #2f3640;
+    }
+    body.dark #display {
+      background: #2a2a2a;
+      color: #fff;
+      border-color: #555;
+    }
 
-  .buttons {
-    display: grid;
-    grid-template-columns: repeat(5, 60px);
-    gap: 10px;
-    justify-content: center;
-  }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(5, 60px);
+      gap: 10px;
+      justify-content: center;
+    }
 
-  button {
-    height: 55px;
-    font-size: 18px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.2s, background 0.3s;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    font-weight: 500;
-  }
-  button:hover {
-    transform: scale(1.08);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-  }
-  button:active {
-    transform: scale(0.95);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  }
+    button {
+      height: 55px;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.2s, background 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      font-weight: 500;
+    }
+    button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+    }
+    button:active {
+      transform: scale(0.95);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
 
-  .num {
-    background: linear-gradient(145deg, #e0e0e0, #f5f6fa);
-    color: #2f3640;
-  }
-  .op {
-    background: linear-gradient(145deg, #00a8ff, #0097e6);
-    color: #fff;
-  }
-  .func {
-    background: linear-gradient(145deg, #9c88ff, #8c7ae6);
-    color: #fff;
-  }
-  .clear {
-    background: linear-gradient(145deg, #e84118, #c23616);
-    color: #fff;
-  }
+    .num {
+      background: linear-gradient(145deg, #e0e0e0, #f5f6fa);
+      color: #2f3640;
+    }
+    .op {
+      background: linear-gradient(145deg, #00a8ff, #0097e6);
+      color: #fff;
+    }
+    .func {
+      background: linear-gradient(145deg, #9c88ff, #8c7ae6);
+      color: #fff;
+    }
+    .clear {
+      background: linear-gradient(145deg, #e84118, #c23616);
+      color: #fff;
+    }
 
-  body.dark .num {
-    background: linear-gradient(145deg, #3b82f6, #2563eb);
-    color: #fff;
-  }
-  body.dark .op {
-    background: linear-gradient(145deg, #10b981, #059669);
-    color: #fff;
-  }
-  body.dark .func {
-    background: linear-gradient(145deg, #8b5cf6, #7c3aed);
-    color: #fff;
-  }
-  body.dark .clear {
-    background: linear-gradient(145deg, #ef4444, #dc2626);
-    color: #fff;
-  }
+    body.dark .num {
+      background: linear-gradient(145deg, #3b82f6, #2563eb);
+      color: #fff;
+    }
+    body.dark .op {
+      background: linear-gradient(145deg, #10b981, #059669);
+      color: #fff;
+    }
+    body.dark .func {
+      background: linear-gradient(145deg, #8b5cf6, #7c3aed);
+      color: #fff;
+    }
+    body.dark .clear {
+      background: linear-gradient(145deg, #ef4444, #dc2626);
+      color: #fff;
+    }
 
-  .history-box {
-    background: rgba(255,255,255,0.2);
-    padding: 15px;
-    border-radius: 12px;
-    width: 250px;
-    max-height: 300px;
-    overflow-y: auto;
-    text-align: left;
-    font-size: 14px;
-  }
-  body.dark .history-box {
-    background: rgba(255,255,255,0.1);
-  }
+    .history-box {
+      background: rgba(255,255,255,0.2);
+      padding: 15px;
+      border-radius: 12px;
+      width: 250px;
+      max-height: 300px;
+      overflow-y: auto;
+      text-align: left;
+      font-size: 14px;
+    }
+    body.dark .history-box {
+      background: rgba(255,255,255,0.1);
+    }
 
-  .history-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
 
-  .clear-history {
-    background: #e84118;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 4px 8px;
-    cursor: pointer;
-    font-size: 13px;
-  }
-  .clear-history:hover {
-    background: #c23616;
-  }
+    .clear-history {
+      background: #e84118;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 4px 8px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .clear-history:hover {
+      background: #c23616;
+    }
 
-  .toggle-dark {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 22px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #555;
-    transition: color 0.3s;
-  }
-  body.dark .toggle-dark {
-    color: #f5f6fa;
-  }
-</style>
+    .toggle-dark {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 26px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #555;
+      transition: color 0.3s;
+      z-index: 1000;
+    }
+    body.dark .toggle-dark {
+      color: #f5f6fa;
+    }
+  </style>
 </head>
 <body>
   <h2>美化版在线计算器</h2>
+  <button class="toggle-dark" onclick="toggleDark()">🌙</button>
   <div class="container">
+    <div class="history-box">
+      <div class="history-header">
+        <strong>计算记录</strong>
+        <button class="clear-history" onclick="clearHistory()">清除</button>
+      </div>
+      <div id="history"></div>
+    </div>
+
     <div class="calculator">
-      <button class="toggle-dark" onclick="toggleDark()">🌙</button>
-      <input type="text" id="display" readonly>
+      <input type="text" id="display" readonly />
       <div class="buttons">
         <button class="func" onclick="memory('MC')">MC</button>
         <button class="func" onclick="memory('MR')">MR</button>
@@ -205,19 +214,11 @@
         <button class="op" onclick="calculate()">=</button>
       </div>
     </div>
-
-    <div class="history-box">
-      <div class="history-header">
-        <strong>计算记录</strong>
-        <button class="clear-history" onclick="clearHistory()">清除</button>
-      </div>
-      <div id="history"></div>
-    </div>
   </div>
 
   <script>
-    let display = document.getElementById('display');
-    let historyBox = document.getElementById('history');
+    const display = document.getElementById('display');
+    const historyBox = document.getElementById('history');
     let history = [];
     let memoryValue = 0;
     let darkMode = false;
@@ -298,3 +299,6 @@
       const toggleBtn = document.querySelector('.toggle-dark');
       toggleBtn.textContent = darkMode ? '☀️' : '🌙';
     }
+  </script>
+</body>
+</html>
