@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>美化版在线计算器</title>
+<style>
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    text-align: center;
+    background: #2f3640;
+    color: #f5f6fa;
+    margin: 0;
+    padding: 20px;
+    transition: background 0.3s, color 0.3s;
+  }
+  body.dark {
+    background: #121212;
+    color: #f0f0f0;
+  }
+  .calculator {
+    display: inline-block;
+    background: #f5f6fa;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    transition: background 0.3s;
+  }
+  body.dark .calculator {
+    background: #1e1e1e;
+  }
+  #display {
+    width: 100%;
+    max-width: 320px;
+    height: 55px;
+    font-size: 26px;
+    text-align: right;
+    margin-bottom: 15px;
+    padding: 8px;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    background: #f0f0f0;
+    color: #2f3640;
+  }
+  body.dark #display {
+    background: #2a2a2a;
+    color: #fff;
+    border-color: #555;
+  }
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(5, 60px);
+    gap: 10px;
+    justify-content: center;
+  }
+  button {
+    height: 55px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.2s, background 0.3s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    font-weight: 500;
+  }
+  button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+  }
+  button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  .num {
+    background: linear-gradient(145deg, #e0e0e0, #f5f6fa);
+    color: #2f3640;
+  }
+  .op {
+    background: linear-gradient(145deg, #00a8ff, #0097e6);
+    color: #fff;
+  }
+  .func {
+    background: linear-gradient(145deg, #9c88ff, #8c7ae6);
+    color: #fff;
+  }
+  .clear {
+    background: linear-gradient(145deg, #e84118, #c23616);
+    color: #fff;
+  }
+
+  body.dark .num {
+    background: linear-gradient(145deg, #3b82f6, #2563eb);
+    color: #fff;
+  }
+  body.dark .op {
+    background: linear-gradient(145deg, #10b981, #059669);
+    color: #fff;
+  }
+  body.dark .func {
+    background: linear-gradient(145deg, #8b5cf6, #7c3aed);
+    color: #fff;
+  }
+  body.dark .clear {
+    background: linear-gradient(145deg, #ef4444, #dc2626);
+    color: #fff;
+  }
+
+  .history {
+    margin-top: 20px;
+    max-width: 320px;
+    text-align: left;
+    font-size: 14px;
+    background: rgba(255,255,255,0.2);
+    padding: 10px;
+    border-radius: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+  body.dark .history { background: rgba(255,255,255,0.1); }
+
+  .toggle-dark {
+    margin-top: 15px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    background: #00a8ff;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .toggle-dark:hover {
+    background: #0097e6;
+  }
+  body.dark .toggle-dark {
+    background: #10b981;
+  }
+  body.dark .toggle-dark:hover {
+    background: #059669;
+  }
+</style>
+</head>
+<body>
+  <h2>美化版在线计算器</h2>
+  <div class="calculator">
+    <input type="text" id="display" readonly>
+    <div class="buttons">
+      <button class="func" onclick="memory('MC')">MC</button>
+      <button class="func" onclick="memory('MR')">MR</button>
+      <button class="func" onclick="memory('M+')">M+</button>
+      <button class="func" onclick="memory('M-')">M-</button>
+      <button class="clear" onclick="clearDisplay()">CE</button>
+
+      <button class="num" onclick="press('7')">7</button>
+      <button class="num" onclick="press('8')">8</button>
+      <button class="num" onclick="press('9')">9</button>
+      <button class="op" onclick="press('/')">÷</button>
+      <button class="op" onclick="science('sqrt')">√</button>
+
+      <button class="num" onclick="press('4')">4</button>
+      <button class="num" onclick="press('5')">5</button>
+      <button class="num" onclick="press('6')">6</button>
+      <button class="op" onclick="press('*')">×</button>
+      <button class="op" onclick="science('percent')">%</button>
+
+      <button class="num" onclick="press('1')">1</button>
+      <button class="num" onclick="press('2')">2</button>
+      <button class="num" onclick="press('3')">3</button>
+      <button class="op" onclick="press('-')">−</button>
+      <button class="op" onclick="science('inv')">1/x</button>
+
+      <button class="num" onclick="press('0')">0</button>
+      <button class="num" onclick="press('.')">.</button>
+      <button class="op" onclick="science('neg')">±</button>
+      <button class="op" onclick="press('+')">+</button>
+      <button class="op" onclick="calculate()">=</button>
+    </div>
+  </div>
+  <div class="history" id="history"></div>
+  <button class="toggle-dark" onclick="toggleDark()">切换暗黑模式</button>
+
+  <script>
+    let display = document.getElementById('display');
+    let historyBox = document.getElementById('history');
+    let history = [];
+    let memoryValue = 0;
+
+    function press(value) { display.value += value; }
+    function clearDisplay() { display.value = ''; }
+    function calculate() {
+      try {
+        let result = eval(display.value);
+        history.push(display.value + " = " + result);
+        updateHistory();
+        display.value = result;
+      } catch { display.value = '错误'; }
+    }
+    function science(type) {
+      let val = parseFloat(display.value);
+      let result;
+      switch(type) {
+        case 'sqrt': result = Math.sqrt(val); break;
+        case 'percent': result = val / 100; break;
+        case 'inv': result = 1 / val; break;
+        case 'neg': result = -val; break;
+      }
+      display.value = result;
+      history.push(type + "(" + val + ") = " + result);
+      updateHistory();
+    }
+    function memory(action) {
+      let val = parseFloat(display.value);
+      switch(action) {
+        case 'MC': memoryValue = 0; break;
+        case 'MR': display.value = memoryValue; break;
+        case 'M+': memoryValue += val; break;
+        case 'M-': memoryValue -= val; break;
+      }
+    }
+    function updateHistory() {
+      historyBox.innerHTML = history.slice(-10).join("<br>");
+    }
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+    }
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        calculate();
+      }
+    });
+  </script>
+</body>
+</html>
