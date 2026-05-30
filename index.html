@@ -184,18 +184,29 @@
     let history = [];
     let memoryValue = 0;
 
-    function press(value) { display.value += value; }
-    function clearDisplay() { display.value = ''; }
+    function press(value) {
+      display.value += value;
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
     function calculate() {
       try {
-        let result = eval(display.value);
+        if (display.value.trim() === '') return;
+        let result = Function('"use strict";return (' + display.value + ')')();
         history.push(display.value + " = " + result);
         updateHistory();
         display.value = result;
-      } catch { display.value = '错误'; }
+      } catch {
+        display.value = '错误';
+      }
     }
+
     function science(type) {
       let val = parseFloat(display.value);
+      if (isNaN(val)) return;
       let result;
       switch(type) {
         case 'sqrt': result = Math.sqrt(val); break;
@@ -207,32 +218,37 @@
       history.push(type + "(" + val + ") = " + result);
       updateHistory();
     }
+
     function memory(action) {
       let val = parseFloat(display.value);
       switch(action) {
         case 'MC': memoryValue = 0; break;
         case 'MR': display.value = memoryValue; break;
-        case 'M+': memoryValue += val; break;
-        case 'M-': memoryValue -= val; break;
+        case 'M+': if (!isNaN(val)) memoryValue += val; break;
+        case 'M-': if (!isNaN(val)) memoryValue -= val; break;
       }
     }
+
     function updateHistory() {
       historyBox.innerHTML = history.slice(-10).join("<br>");
     }
+
     function toggleDark() {
       document.body.classList.toggle('dark');
     }
-    document.addEventListener('keydown', function(event) {
-  const allowedKeys = ['0','1','2','3','4','5','6','7','8','9','.','+','-','*','/','Enter','Backspace'];
-  if (allowedKeys.includes(event.key)) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      calculate();
-    } else if (event.key === 'Backspace') {
-      event.preventDefault();
-      display.value = display.value.slice(0, -1);
-    } else {
-      press(event.key);
-    }
+
+    window.addEventListener('keydown', function(event) {
+  const key = event.key;
+  if ((key >= '0' && key <= '9') || key === '.' || ['+', '-', '*', '/', '(', ')'].includes(key)) {
+    press(key);
+  } else if (key === 'Enter') {
+    calculate();
+  } else if (key === 'Backspace') {
+    display.value = display.value.slice(0, -1);
+  } else if (key.toLowerCase() === 'c') {
+    clearDisplay();
   }
 });
+</script>
+</body>
+</html>
