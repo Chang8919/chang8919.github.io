@@ -23,7 +23,9 @@
       justify-content: center;
       align-items: flex-start;
       gap: 30px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      max-width: 700px;
+      margin: 0 auto;
     }
 
     .calculator {
@@ -33,6 +35,8 @@
       border-radius: 20px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.3);
       transition: background 0.3s;
+      flex-shrink: 0;
+      width: 360px;
     }
     body.dark .calculator {
       background: #1e1e1e;
@@ -40,7 +44,6 @@
 
     #display {
       width: 100%;
-      max-width: 320px;
       height: 55px;
       font-size: 26px;
       text-align: right;
@@ -126,6 +129,7 @@
       overflow-y: auto;
       text-align: left;
       font-size: 14px;
+      flex-shrink: 0;
     }
     body.dark .history-box {
       background: rgba(255,255,255,0.1);
