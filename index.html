@@ -8,7 +8,7 @@
     font-family: "Segoe UI", Arial, sans-serif;
     text-align: center;
     background: #2f3640;
-    color: #f5f6fa;
+    color: #2f3640;
     margin: 0;
     padding: 20px;
     transition: background 0.3s, color 0.3s;
@@ -21,8 +21,8 @@
     display: inline-block;
     background: #f5f6fa;
     padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     transition: background 0.3s;
   }
   body.dark .calculator {
@@ -37,7 +37,7 @@
     margin-bottom: 15px;
     padding: 8px;
     border: 2px solid #ccc;
-    border-radius: 12px;
+    border-radius: 10px;
     background: #f0f0f0;
     color: #2f3640;
   }
@@ -56,54 +56,22 @@
     height: 55px;
     font-size: 18px;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.2s, background 0.3s;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    font-weight: 500;
+    transition: transform 0.1s, background 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
   }
-  button:hover {
-    transform: scale(1.08);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-  }
-  button:active {
-    transform: scale(0.95);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  }
+  button:hover { transform: scale(1.05); }
 
-  .num {
-    background: linear-gradient(145deg, #e0e0e0, #f5f6fa);
-    color: #2f3640;
-  }
-  .op {
-    background: linear-gradient(145deg, #00a8ff, #0097e6);
-    color: #fff;
-  }
-  .func {
-    background: linear-gradient(145deg, #9c88ff, #8c7ae6);
-    color: #fff;
-  }
-  .clear {
-    background: linear-gradient(145deg, #e84118, #c23616);
-    color: #fff;
-  }
+  .num { background: #dcdde1; color: #2f3640; }
+  .op { background: #00a8ff; color: #fff; }
+  .func { background: #9c88ff; color: #fff; }
+  .clear { background: #e84118; color: #fff; }
 
-  body.dark .num {
-    background: linear-gradient(145deg, #3b82f6, #2563eb);
-    color: #fff;
-  }
-  body.dark .op {
-    background: linear-gradient(145deg, #10b981, #059669);
-    color: #fff;
-  }
-  body.dark .func {
-    background: linear-gradient(145deg, #8b5cf6, #7c3aed);
-    color: #fff;
-  }
-  body.dark .clear {
-    background: linear-gradient(145deg, #ef4444, #dc2626);
-    color: #fff;
-  }
+  body.dark .num { background: #3b82f6; color: #fff; }
+  body.dark .op { background: #10b981; color: #fff; }
+  body.dark .func { background: #8b5cf6; color: #fff; }
+  body.dark .clear { background: #ef4444; color: #fff; }
 
   .history {
     margin-top: 20px;
@@ -126,21 +94,14 @@
     background: #00a8ff;
     color: #fff;
     cursor: pointer;
-    transition: background 0.3s;
-  }
-  .toggle-dark:hover {
-    background: #0097e6;
   }
   body.dark .toggle-dark {
     background: #10b981;
   }
-  body.dark .toggle-dark:hover {
-    background: #059669;
-  }
 </style>
 </head>
 <body>
-  <h2>美化版在线计算器</h2>
+  <h2 style="color:#f5f6fa;">美化版在线计算器</h2>
   <div class="calculator">
     <input type="text" id="display" readonly>
     <div class="buttons">
@@ -223,9 +184,11 @@
       document.body.classList.toggle('dark');
     }
     document.addEventListener('keydown', function(event) {
-      if (event.key === 'Enter') {
-        calculate();
-      }
+      const key = event.key;
+      if (!isNaN(key) || ['+', '-', '*', '/', '.'].includes(key)) press(key);
+      else if (key === 'Enter') calculate();
+      else if (key === 'Backspace') display.value = display.value.slice(0, -1);
+      else if (key.toUpperCase() === 'C') clearDisplay();
     });
   </script>
 </body>
